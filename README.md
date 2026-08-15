@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/RudrakshRakeshZodage/hwpilot/main/main.png" alt="HwPilot Banner" width="100%" />
-</div>
-
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
 [![PyPI](https://img.shields.io/badge/PyPI-v0.1.1-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
@@ -17,6 +13,12 @@
 > **HwPilot — Hardware-aware ML environment setup and compatibility manager.**
 > 
 > *Detect my hardware. Resolve the correct ML environment. Ask me once. Install it safely. Verify that it actually works.*
+
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/RudrakshRakeshZodage/hwpilot/main/main.png" alt="HwPilot Banner" width="100%" />
+</div>
+
 
 ---
 
