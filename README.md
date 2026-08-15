@@ -25,6 +25,23 @@ AI / Machine Learning Engineer & Developer
 
 ---
 
+## 🔄 User Workflow & Architecture
+
+```mermaid
+flowchart TD
+    A["💻 User Terminal / CLI"] --> B["🔍 Hardware Detection Layer\n(CPU, GPU, VRAM, Driver, OS, Python)"]
+    B --> C["⚖️ Compatibility Resolver Engine\n(NVIDIA Driver vs CUDA Matrix)"]
+    C --> D["📋 Installation Plan Preview\n(PyTorch, CUDA Runtime, Packages)"]
+    D --> E{"❓ User Confirmation\nProceed with setup? [Y/n]"}
+    E -- Yes / --yes --> F["📦 Virtual Environment Creation\n(./hwpilot-env)"]
+    F --> G["📥 Package Installation & Streaming Progress\n(PyTorch + CUDA Wheels ~2.4GB)"]
+    G --> H["🧪 Real GPU Runtime Verification\n(Tensor computation test)"]
+    H --> I["📄 Persistent Manifest Saved\n(config/, logs/, manifest.json)"]
+    E -- No --> J["🛑 Setup Cancelled"]
+```
+
+---
+
 ## 💡 What is HwPilot?
 
 **HwPilot** is a hardware-aware machine learning environment setup and compatibility manager created by **Rudraksh Rakesh Zodage**. It automatically inspects a computer's CPU, GPU, NVIDIA driver, operating system, and Python runtime to dynamically resolve, install, and verify a fully compatible PyTorch/CUDA ML software stack inside an isolated virtual environment.
@@ -49,29 +66,42 @@ HwPilot replaces manual trial-and-error with an automated, hardware-aware compat
 pip install hwpilot
 ```
 
+> **Note for Windows Users**: If running global `pip install hwpilot`, you can run via `python -m hwpilot <command>` OR add Python Scripts to your PowerShell PATH for the current session:
+> ```powershell
+> $env:Path += ";$env:APPDATA\Python\Python313\Scripts"
+> ```
+
 ### Basic Workflow
+
+You can invoke HwPilot via `hwpilot` or `python -m hwpilot`:
 
 ```bash
 # 1. Inspect hardware and system specs
 hwpilot detect
+# or: python -m hwpilot detect
 
 # 2. Check if current machine is suitable for ML workloads
 hwpilot check
+# or: python -m hwpilot check
 
 # 3. Preview resolved compatibility & installation plan
 hwpilot plan
+# or: python -m hwpilot plan
 
 # 4. Execute setup (detect, resolve, confirm, install & verify)
 hwpilot setup
+# or: python -m hwpilot setup
 
 # 5. Verify runtime environment capability
 hwpilot verify
+# or: python -m hwpilot verify
 ```
 
 ### Automation / CI Mode
 
 ```bash
 hwpilot setup --yes --path ./my-ml-env
+# or: python -m hwpilot setup --yes --path ./my-ml-env
 ```
 
 ---
@@ -144,12 +174,14 @@ pytest
 pip install build twine
 python -m build
 twine check dist/*
-twine upload dist/*
+python -m twine upload dist/*
 ```
 
 ### Automated Publishing (GitHub Actions Trusted Publisher)
 1. Configure PyPI Trusted Publisher with workflow `.github/workflows/pypi-publish.yml`.
 2. Create a GitHub Release — publishing triggers automatically on release creation.
+
+---
 
 ## 🤝 Contributing
 
