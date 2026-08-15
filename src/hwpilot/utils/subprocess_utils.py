@@ -43,7 +43,8 @@ def run_cmd_stream(
     line_callback: Optional[Callable[[str], None]] = None
 ) -> Tuple[int, List[str]]:
     """
-    Executes a subprocess command and streams stdout lines in real-time.
+    Executes a subprocess command and streams stdout lines in real-time,
+    handling both newline (\\n) and carriage return (\\r) progress updates.
     Returns (returncode, lines_captured).
     """
     if cmd:
@@ -63,17 +64,41 @@ def run_cmd_stream(
             universal_newlines=True
         )
 
+        buffer = ""
         if proc.stdout:
-            for line in iter(proc.stdout.readline, ""):
-                line_clean = line.strip()
-                if line_clean:
-                    captured_lines.append(line_clean)
-                    if line_callback:
-                        line_callback(line_clean)
-                    else:
-                        print(f"  {line_clean}", flush=True)
+            while True:
+                chunk = proc.stdout.read(64)
+                if not chunk and proc.poll() is not None:
+                    break
+                if not chunk:
+                    continue
+                buffer += chunk
 
-        proc.stdout.close()
+                while "\n" in buffer or "\r" in buffer:
+                    idx_r = buffer.find("\r")
+                    idx_n = buffer.find("\n")
+                    if idx_r != -1 and (idx_n == -1 or idx_r < idx_n):
+                        line = buffer[:idx_r]
+                        buffer = buffer[idx_r + 1:]
+                    else:
+                        line = buffer[:idx_n]
+                        buffer = buffer[idx_n + 1:]
+
+                    line_clean = line.strip()
+                    if line_clean:
+                        captured_lines.append(line_clean)
+                        if line_callback:
+                            line_callback(line_clean)
+                        else:
+                            print(f"  {line_clean}", flush=True)
+
+            # Flush remaining buffer if any
+            line_clean = buffer.strip()
+            if line_clean:
+                captured_lines.append(line_clean)
+                if line_callback:
+                    line_callback(line_clean)
+
         returncode = proc.wait()
         return returncode, captured_lines
     except Exception as e:
