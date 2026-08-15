@@ -29,19 +29,47 @@ AI / Machine Learning Engineer & Developer
 
 ---
 
-## 🔄 User Workflow & Architecture
+## 🔄 End-to-End System Sequence & Architecture
 
 ```mermaid
-flowchart TD
-    A["User Terminal / CLI"] --> B["Hardware Detection Layer"]
-    B --> C["Compatibility Resolver Engine"]
-    C --> D["Installation Plan Preview"]
-    D --> E["User Confirmation Prompt"]
-    E -->|Yes| F["Virtual Environment Creation"]
-    F --> G["Package Installation"]
-    G --> H["Real GPU Runtime Verification"]
-    H --> I["Persistent Manifest Saved"]
-    E -->|No| J["Setup Cancelled"]
+sequenceDiagram
+    autonumber
+    actor User as 💻 User (CLI)
+    participant Detector as 🔍 Hardware Detector
+    participant Resolver as ⚖️ Compatibility Engine
+    participant Venv as 📦 Environment Manager
+    participant PyTorch as 🌐 PyTorch Wheel Index
+    participant Verifier as 🧪 GPU Tensor Verifier
+
+    User->>Detector: Execute `hwpilot setup -y`
+    activate Detector
+    Detector->>Detector: Probe CPU, GPU (nvidia-smi), OS & Python
+    Detector-->>Resolver: Return Hardware Specs (RTX 4060, Driver 610.74, Python 3.13)
+    deactivate Detector
+
+    activate Resolver
+    Resolver->>Resolver: Evaluate Driver vs CUDA Matrix (defaults.json)
+    Resolver-->>User: Display Compatibility Plan (PyTorch 2.6.0 + CUDA 12.4)
+    deactivate Resolver
+
+    User->>Venv: Initialize Isolated Virtual Environment
+    activate Venv
+    Venv->>Venv: Create `./hwpilot-env` (Seeded with pip/wheel)
+    
+    Venv->>PyTorch: Request PyTorch CUDA 12.4 Wheel Packages
+    activate PyTorch
+    PyTorch-->>Venv: Stream Download (~2.53 GB) & Unpack CUDA DLLs
+    deactivate PyTorch
+    deactivate Venv
+
+    Venv->>Verifier: Trigger Runtime Verification Suite
+    activate Verifier
+    Verifier->>Verifier: Import torch & Validate CUDA Device Available
+    Verifier->>Verifier: Execute Matrix Multiplication Tensor Math on GPU
+    Verifier-->>User: Runtime Verification PASSED (GPU Accelerated)
+    deactivate Verifier
+
+    Venv->>User: Save `manifest.json` & Output Environment Activation Path
 ```
 
 ---
