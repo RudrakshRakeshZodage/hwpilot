@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="main.png" alt="HwPilot Banner" width="100%" />
+  <img src="https://raw.githubusercontent.com/RudrakshRakeshZodage/hwpilot/main/main.png" alt="HwPilot Banner" width="100%" />
 </div>
 
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
@@ -25,9 +25,24 @@
 **Rudraksh Rakesh Zodage**  
 Open Source AI Engineer
 
+- **Email**: [rudrakshrakeshzodage@gmail.com](mailto:rudrakshrakeshzodage@gmail.com)
+- **GitHub**: [github.com/RudrakshRakeshZodage](https://github.com/RudrakshRakeshZodage/)
+- **LinkedIn**: [linkedin.com/in/rudraksh-zodage-](https://www.linkedin.com/in/rudraksh-zodage-/)
+- **HuggingFace**: [huggingface.co/rudrakshrakeshzodage](https://huggingface.co/rudrakshrakeshzodage)
+
 ---
 
-## 🔄 End-to-End System Sequence & Architecture
+## 🔄 End-to-End Architecture & Workflow
+
+| Step | Layer / Component | Action | Result / Output |
+| :--- | :--- | :--- | :--- |
+| **1** | 💻 **User Terminal** | Run `hwpilot setup -y` | Triggers automated pipeline |
+| **2** | 🔍 **Hardware Detector** | Probes CPU, GPU, Driver via `nvidia-smi`, OS & Python | System specs: RTX 4060, Driver 610.74, Python 3.13 |
+| **3** | ⚖️ **Compatibility Engine** | Matches NVIDIA Driver vs CUDA Matrix (`defaults.json`) | Resolves **PyTorch 2.6.0 + CUDA 12.4** (`cu124`) |
+| **4** | 📦 **Environment Manager** | Creates isolated virtual environment (`./hwpilot-env`) | Clean virtual environment seeded with pip & wheel |
+| **5** | 🌐 **PyTorch CDN Index** | Streams package download & uncompress | ~2.53 GB PyTorch CUDA wheels extracted to disk |
+| **6** | 🧪 **GPU Tensor Verifier** | Executes real matrix multiplication on GPU | **Verified GPU runtime acceleration** |
+| **7** | 📄 **Manifest Writer** | Generates audit records | `manifest.json`, `hardware.json`, `environment.json` |
 
 ```mermaid
 sequenceDiagram
