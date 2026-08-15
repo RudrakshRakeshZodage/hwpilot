@@ -11,6 +11,7 @@ from rich.progress import (
     DownloadColumn,
     TransferSpeedColumn,
     TimeRemainingColumn,
+    TimeElapsedColumn,
 )
 from rich.console import Console
 from hwpilot.models.plan import InstallationPlan
@@ -44,7 +45,7 @@ class PipInteractiveProgress:
         self.progress = progress
         self.download_task: Optional[int] = None
         self.unpack_task: Optional[int] = None
-        self.current_pkg: str = "Packages"
+        self.current_pkg: str = "PyTorch Packages"
 
     def handle_line(self, line: str):
         # 1. New package collecting / downloading
@@ -157,11 +158,15 @@ def install_plan(plan: InstallationPlan, python_exe: Path, stream_output: bool =
         console.print("\n[bold cyan]📥 Downloading & Installing ML Packages (PyTorch / CUDA ~2.5GB)...[/bold cyan]")
         with Progress(
             SpinnerColumn(),
-            TextColumn("{task.description}"),
-            BarColumn(bar_width=30),
+            TextColumn("[bold cyan]{task.description}[/bold cyan]"),
+            BarColumn(bar_width=25),
+            TextColumn("[bold green]{task.percentage:>3.0f}%[/bold green]"),
             DownloadColumn(),
             TransferSpeedColumn(),
+            TextColumn("[yellow]ETA:[/yellow]"),
             TimeRemainingColumn(),
+            TextColumn("[dim]Elapsed:[/dim]"),
+            TimeElapsedColumn(),
             console=console,
             transient=False,
         ) as progress:
