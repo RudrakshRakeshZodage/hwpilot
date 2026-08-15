@@ -1,6 +1,6 @@
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
-[![PyPI](https://img.shields.io/badge/PyPI-v0.1.2-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.1.3-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
 [![Python](https://img.shields.io/badge/Python-3.8_|_3.9_|_3.10_|_3.11_|_3.12_|_3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/hwpilot/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6_|_2.5_|_2.4-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.4_|_12.1_|_11.8-76B900?style=flat-square&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
@@ -46,46 +46,9 @@ Open Source AI Engineer
 | **6** | 🧪 **GPU Tensor Verifier** | Executes real matrix multiplication on GPU | **Verified GPU runtime acceleration** |
 | **7** | 📄 **Manifest Writer** | Generates audit records | `manifest.json`, `hardware.json`, `environment.json` |
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as 💻 User (CLI)
-    participant Detector as 🔍 Hardware Detector
-    participant Resolver as ⚖️ Compatibility Engine
-    participant Venv as 📦 Environment Manager
-    participant PyTorch as 🌐 PyTorch Wheel Index
-    participant Verifier as 🧪 GPU Tensor Verifier
-
-    User->>Detector: Execute `hwpilot setup -y`
-    activate Detector
-    Detector->>Detector: Probe CPU, GPU (nvidia-smi), OS & Python
-    Detector-->>Resolver: Return Hardware Specs (RTX 4060, Driver 610.74, Python 3.13)
-    deactivate Detector
-
-    activate Resolver
-    Resolver->>Resolver: Evaluate Driver vs CUDA Matrix (defaults.json)
-    Resolver-->>User: Display Compatibility Plan (PyTorch 2.6.0 + CUDA 12.4)
-    deactivate Resolver
-
-    User->>Venv: Initialize Isolated Virtual Environment
-    activate Venv
-    Venv->>Venv: Create `./hwpilot-env` (Seeded with pip/wheel)
-    
-    Venv->>PyTorch: Request PyTorch CUDA 12.4 Wheel Packages
-    activate PyTorch
-    PyTorch-->>Venv: Stream Download (~2.53 GB) & Unpack CUDA DLLs
-    deactivate PyTorch
-    deactivate Venv
-
-    Venv->>Verifier: Trigger Runtime Verification Suite
-    activate Verifier
-    Verifier->>Verifier: Import torch & Validate CUDA Device Available
-    Verifier->>Verifier: Execute Matrix Multiplication Tensor Math on GPU
-    Verifier-->>User: Runtime Verification PASSED (GPU Accelerated)
-    deactivate Verifier
-
-    Venv->>User: Save `manifest.json` & Output Environment Activation Path
-```
+<div align="center">
+  <img src="https://raw.githubusercontent.com/RudrakshRakeshZodage/hwpilot/main/architecture.png" alt="HwPilot Architecture Sequence Diagram" width="100%" />
+</div>
 
 ---
 
