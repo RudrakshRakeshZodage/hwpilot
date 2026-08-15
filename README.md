@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="main.png" alt="HwPilot Banner" width="100%" />
+</div>
+
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
 [![PyPI version](https://img.shields.io/pypi/v/hwpilot.svg?style=flat-square&color=blue)](https://pypi.org/project/hwpilot/)
@@ -67,38 +71,22 @@ pip install hwpilot
 > $env:Path += ";$env:APPDATA\Python\Python313\Scripts"
 > ```
 
-### Basic Workflow
+### Quick Setup
 
-You can invoke HwPilot via `hwpilot` or `python -m hwpilot`:
-
-```bash
-# 1. Inspect hardware and system specs
-hwpilot detect
-# or: python -m hwpilot detect
-
-# 2. Check if current machine is suitable for ML workloads
-hwpilot check
-# or: python -m hwpilot check
-
-# 3. Preview resolved compatibility & installation plan
-hwpilot plan
-# or: python -m hwpilot plan
-
-# 4. Execute setup (detect, resolve, confirm, install & verify)
-hwpilot setup
-# or: python -m hwpilot setup
-
-# 5. Verify runtime environment capability
-hwpilot verify
-# or: python -m hwpilot verify
-```
-
-### Automation / CI Mode
+Auto-detect your hardware, resolve compatible PyTorch/CUDA wheels, create an isolated virtual environment, and verify GPU compute in one command:
 
 ```bash
-hwpilot setup --yes --path ./my-ml-env
-# or: python -m hwpilot setup --yes --path ./my-ml-env
+hwpilot setup -y
 ```
+
+*(or via python module)*:
+```bash
+python -m hwpilot setup -y
+```
+
+> **Flags**:
+> - `-y`, `--yes`: Automatically accept and proceed without prompt.
+> - `-p`, `--path <DIR>`: Custom environment path (default: `./hwpilot-env`).
 
 ---
 
