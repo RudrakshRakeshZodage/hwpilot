@@ -29,32 +29,28 @@ AI / Machine Learning Engineer & Developer
 
 ```mermaid
 flowchart TD
-    A["💻 User Terminal / CLI"] --> B["🔍 Hardware Detection Layer\n(CPU, GPU, VRAM, Driver, OS, Python)"]
-    B --> C["⚖️ Compatibility Resolver Engine\n(NVIDIA Driver vs CUDA Matrix)"]
-    C --> D["📋 Installation Plan Preview\n(PyTorch, CUDA Runtime, Packages)"]
-    D --> E{"❓ User Confirmation\nProceed with setup? [Y/n]"}
-    E -- Yes / --yes --> F["📦 Virtual Environment Creation\n(./hwpilot-env)"]
-    F --> G["📥 Package Installation & Streaming Progress\n(PyTorch + CUDA Wheels ~2.4GB)"]
-    G --> H["🧪 Real GPU Runtime Verification\n(Tensor computation test)"]
-    H --> I["📄 Persistent Manifest Saved\n(config/, logs/, manifest.json)"]
-    E -- No --> J["🛑 Setup Cancelled"]
+    A["User Terminal / CLI"] --> B["Hardware Detection Layer"]
+    B --> C["Compatibility Resolver Engine"]
+    C --> D["Installation Plan Preview"]
+    D --> E["User Confirmation Prompt"]
+    E -->|Yes| F["Virtual Environment Creation"]
+    F --> G["Package Installation"]
+    G --> H["Real GPU Runtime Verification"]
+    H --> I["Persistent Manifest Saved"]
+    E -->|No| J["Setup Cancelled"]
 ```
 
 ---
 
-## 💡 What is HwPilot?
+## 🔥 What is HwPilot?
 
-**HwPilot** is a hardware-aware machine learning environment setup and compatibility manager created by **Rudraksh Rakesh Zodage**. It automatically inspects a computer's CPU, GPU, NVIDIA driver, operating system, and Python runtime to dynamically resolve, install, and verify a fully compatible PyTorch/CUDA ML software stack inside an isolated virtual environment.
+No cap, setting up PyTorch and CUDA across different GPUs and laptops is a major headache. Broken drivers, incompatible wheels, and CUDA errors ruin the vibe.
 
-### Why HwPilot?
-
-Running the same ML codebase across different machines (laptops, workstation rigs, cloud nodes) often leads to broken CUDA drivers, incompatible PyTorch wheels, or runtime kernel crashes. Manually matching NVIDIA driver minimum version matrices with PyTorch CUDA runtime builds is complex and error-prone.
-
-HwPilot replaces manual trial-and-error with an automated, hardware-aware compatibility resolver:
-- **Zero Hardcoded Hardware Strings**: Dynamically matches driver compute capabilities.
-- **Isolated Environments**: Installs packages in dedicated virtual environments (`./hwpilot-env`).
-- **Safety Guarantee**: Never modifies system drivers or global packages silently.
-- **Real GPU Verification**: Performs real tensor operations on GPU to verify compute capability before declaring success.
+**HwPilot** solves this automatically:
+- 🤖 **Auto-detects your rig**: Scans your CPU, GPU, VRAM, NVIDIA drivers, and OS.
+- ⚡ **Smart Resolution**: Finds the exact PyTorch + CUDA build tailored for your machine.
+- 🛡️ **Clean & Safe**: Creates an isolated `./hwpilot-env` without touching system drivers.
+- ✅ **Real GPU Verification**: Runs actual GPU tensor math before saying it's ready. No fake green checks.
 
 ---
 
@@ -164,22 +160,6 @@ cd hwpilot
 pip install -e .[dev]
 pytest
 ```
-
----
-
-## 📦 PyPI Publishing
-
-### Manual Publishing (Twine)
-```bash
-pip install build twine
-python -m build
-twine check dist/*
-python -m twine upload dist/*
-```
-
-### Automated Publishing (GitHub Actions Trusted Publisher)
-1. Configure PyPI Trusted Publisher with workflow `.github/workflows/pypi-publish.yml`.
-2. Create a GitHub Release — publishing triggers automatically on release creation.
 
 ---
 
