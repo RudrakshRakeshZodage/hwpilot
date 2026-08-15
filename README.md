@@ -1,6 +1,6 @@
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
-[![PyPI](https://img.shields.io/badge/PyPI-v0.1.1-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.1.2-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
 [![Python](https://img.shields.io/badge/Python-3.8_|_3.9_|_3.10_|_3.11_|_3.12_|_3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/hwpilot/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.6_|_2.5_|_2.4-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![CUDA](https://img.shields.io/badge/CUDA-12.4_|_12.1_|_11.8-76B900?style=flat-square&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
