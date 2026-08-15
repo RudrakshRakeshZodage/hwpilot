@@ -4,12 +4,15 @@
 
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
-[![PyPI version](https://img.shields.io/pypi/v/hwpilot.svg?style=flat-square&color=blue)](https://pypi.org/project/hwpilot/)
-[![Python Version](https://img.shields.io/pypi/pyversions/hwpilot.svg?style=flat-square&color=brightgreen)](https://pypi.org/project/hwpilot/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.1.1-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![Python](https://img.shields.io/badge/Python-3.8_|_3.9_|_3.10_|_3.11_|_3.12_|_3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.6_|_2.5_|_2.4-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![CUDA](https://img.shields.io/badge/CUDA-12.4_|_12.1_|_11.8-76B900?style=flat-square&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
+[![Hardware](https://img.shields.io/badge/Hardware-NVIDIA_RTX_|_Apple_MPS_|_CPU-0078D4?style=flat-square&logo=nvidia&logoColor=white)](https://github.com/RudrakshRakeshZodage/hwpilot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Author: Rudraksh Rakesh Zodage](https://img.shields.io/badge/Author-Rudraksh%20Rakesh%20Zodage-orange.svg?style=flat-square)](https://github.com/RudrakshRakeshZodage)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rudraksh%20Zodage-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rudraksh-zodage-/)
-[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Rudraksh%20Zodage-yellow?style=flat-square)](https://huggingface.co/rudrakshrakeshzodage)
+[![Author](https://img.shields.io/badge/Author-Rudraksh%20Rakesh%20Zodage-orange.svg?style=flat-square)](https://github.com/RudrakshRakeshZodage)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rudraksh%20Zodage-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rudraksh-zodage-/)
+[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Rudraksh%20Zodage-FFD21E?style=flat-square)](https://huggingface.co/rudrakshrakeshzodage)
 
 > **HwPilot — Hardware-aware ML environment setup and compatibility manager.**
 > 
@@ -20,12 +23,7 @@
 ## 👨‍💻 Created & Maintained By
 
 **Rudraksh Rakesh Zodage**  
-AI / Machine Learning Engineer & Developer
-
-- **Email**: [rudrakshrakeshzodage@gmail.com](mailto:rudrakshrakeshzodage@gmail.com)
-- **GitHub**: [github.com/RudrakshRakeshZodage](https://github.com/RudrakshRakeshZodage/)
-- **LinkedIn**: [linkedin.com/in/rudraksh-zodage-](https://www.linkedin.com/in/rudraksh-zodage-/)
-- **HuggingFace**: [huggingface.co/rudrakshrakeshzodage](https://huggingface.co/rudrakshrakeshzodage)
+Open Source AI Engineer
 
 ---
 
@@ -190,16 +188,7 @@ Contributions to **HwPilot** are welcome! Whether you are reporting a bug, addin
 4. Ensure test suite passes: `pytest`
 5. Open a Pull Request on [GitHub](https://github.com/RudrakshRakeshZodage/hwpilot/pulls).
 
----
 
-## 👤 Author & Maintainer Profile
-
-Created, architected, and maintained by **Rudraksh Rakesh Zodage**.
-
-- **Email**: [rudrakshrakeshzodage@gmail.com](mailto:rudrakshrakeshzodage@gmail.com)
-- **GitHub**: [github.com/RudrakshRakeshZodage](https://github.com/RudrakshRakeshZodage/)
-- **LinkedIn**: [linkedin.com/in/rudraksh-zodage-](https://www.linkedin.com/in/rudraksh-zodage-/)
-- **HuggingFace**: [huggingface.co/rudrakshrakeshzodage](https://huggingface.co/rudrakshrakeshzodage)
 
 ---
 
