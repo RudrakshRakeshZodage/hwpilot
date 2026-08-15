@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-08-15T00:00:00Z",
+  "nvidia_driver_requirements": {
+    "12.4": {
+      "Linux": "525.60.13",
+      "Windows": "527.41"
+    },
+    "12.1": {
+      "Linux": "525.60.13",
+      "Windows": "527.41"
+    },
+    "11.8": {
+      "Linux": "450.80.02",
+      "Windows": "452.39"
+    }
+  },
+  "frameworks": {
+    "PyTorch": {
+      "python_supported": ["3.8", "3.9", "3.10", "3.11", "3.12"],
+      "default_version": "2.4.1",
+      "cuda_runtimes": [
+        {
+          "cuda_version": "12.4",
+          "pytorch_version": "2.4.1",
+          "index_url": "https://download.pytorch.org/whl/cu124",
+          "packages": ["torch", "torchvision", "torchaudio"],
+          "min_compute_capability": "5.0"
+        },
+        {
+          "cuda_version": "12.1",
+          "pytorch_version": "2.4.1",
+          "index_url": "https://download.pytorch.org/whl/cu121",
+          "packages": ["torch", "torchvision", "torchaudio"],
+          "min_compute_capability": "5.0"
+        },
+        {
+          "cuda_version": "11.8",
+          "pytorch_version": "2.4.1",
+          "index_url": "https://download.pytorch.org/whl/cu118",
+          "packages": ["torch", "torchvision", "torchaudio"],
+          "min_compute_capability": "3.5"
+        },
+        {
+          "cuda_version": null,
+          "pytorch_version": "2.4.1",
+          "index_url": "https://download.pytorch.org/whl/cpu",
+          "packages": ["torch", "torchvision", "torchaudio"],
+          "min_compute_capability": null
+        }
+      ]
+    }
+  }
+}
