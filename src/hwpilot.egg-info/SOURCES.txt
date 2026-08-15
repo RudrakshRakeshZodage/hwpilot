@@ -2,6 +2,7 @@ LICENSE
 README.md
 pyproject.toml
 src/hwpilot/__init__.py
+src/hwpilot/__main__.py
 src/hwpilot/cli.py
 src/hwpilot.egg-info/PKG-INFO
 src/hwpilot.egg-info/SOURCES.txt

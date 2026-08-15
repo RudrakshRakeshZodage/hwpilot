@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: hwpilot
-Version: 0.1.0
+Version: 0.1.1
 Summary: Hardware-aware ML environment setup and compatibility manager.
 Author-email: Rudraksh Rakesh Zodage <rudrakshrakeshzodage@gmail.com>
 Maintainer-email: Rudraksh Rakesh Zodage <rudrakshrakeshzodage@gmail.com>
@@ -70,19 +70,32 @@ AI / Machine Learning Engineer & Developer
 
 ---
 
-## 💡 What is HwPilot?
+## 🔄 User Workflow & Architecture
 
-**HwPilot** is a hardware-aware machine learning environment setup and compatibility manager created by **Rudraksh Rakesh Zodage**. It automatically inspects a computer's CPU, GPU, NVIDIA driver, operating system, and Python runtime to dynamically resolve, install, and verify a fully compatible PyTorch/CUDA ML software stack inside an isolated virtual environment.
+```mermaid
+flowchart TD
+    A["User Terminal / CLI"] --> B["Hardware Detection Layer"]
+    B --> C["Compatibility Resolver Engine"]
+    C --> D["Installation Plan Preview"]
+    D --> E["User Confirmation Prompt"]
+    E -->|Yes| F["Virtual Environment Creation"]
+    F --> G["Package Installation"]
+    G --> H["Real GPU Runtime Verification"]
+    H --> I["Persistent Manifest Saved"]
+    E -->|No| J["Setup Cancelled"]
+```
 
-### Why HwPilot?
+---
 
-Running the same ML codebase across different machines (laptops, workstation rigs, cloud nodes) often leads to broken CUDA drivers, incompatible PyTorch wheels, or runtime kernel crashes. Manually matching NVIDIA driver minimum version matrices with PyTorch CUDA runtime builds is complex and error-prone.
+## 🔥 What is HwPilot?
 
-HwPilot replaces manual trial-and-error with an automated, hardware-aware compatibility resolver:
-- **Zero Hardcoded Hardware Strings**: Dynamically matches driver compute capabilities.
-- **Isolated Environments**: Installs packages in dedicated virtual environments (`./hwpilot-env`).
-- **Safety Guarantee**: Never modifies system drivers or global packages silently.
-- **Real GPU Verification**: Performs real tensor operations on GPU to verify compute capability before declaring success.
+No cap, setting up PyTorch and CUDA across different GPUs and laptops is a major headache. Broken drivers, incompatible wheels, and CUDA errors ruin the vibe.
+
+**HwPilot** solves this automatically:
+- 🤖 **Auto-detects your rig**: Scans your CPU, GPU, VRAM, NVIDIA drivers, and OS.
+- ⚡ **Smart Resolution**: Finds the exact PyTorch + CUDA build tailored for your machine.
+- 🛡️ **Clean & Safe**: Creates an isolated `./hwpilot-env` without touching system drivers.
+- ✅ **Real GPU Verification**: Runs actual GPU tensor math before saying it's ready. No fake green checks.
 
 ---
 
@@ -94,29 +107,42 @@ HwPilot replaces manual trial-and-error with an automated, hardware-aware compat
 pip install hwpilot
 ```
 
+> **Note for Windows Users**: If running global `pip install hwpilot`, you can run via `python -m hwpilot <command>` OR add Python Scripts to your PowerShell PATH for the current session:
+> ```powershell
+> $env:Path += ";$env:APPDATA\Python\Python313\Scripts"
+> ```
+
 ### Basic Workflow
+
+You can invoke HwPilot via `hwpilot` or `python -m hwpilot`:
 
 ```bash
 # 1. Inspect hardware and system specs
 hwpilot detect
+# or: python -m hwpilot detect
 
 # 2. Check if current machine is suitable for ML workloads
 hwpilot check
+# or: python -m hwpilot check
 
 # 3. Preview resolved compatibility & installation plan
 hwpilot plan
+# or: python -m hwpilot plan
 
 # 4. Execute setup (detect, resolve, confirm, install & verify)
 hwpilot setup
+# or: python -m hwpilot setup
 
 # 5. Verify runtime environment capability
 hwpilot verify
+# or: python -m hwpilot verify
 ```
 
 ### Automation / CI Mode
 
 ```bash
 hwpilot setup --yes --path ./my-ml-env
+# or: python -m hwpilot setup --yes --path ./my-ml-env
 ```
 
 ---
@@ -181,15 +207,6 @@ pytest
 ```
 
 ---
-
-## 📦 PyPI Publishing
-
-```bash
-pip install build twine
-python -m build
-twine check dist/*
-twine upload dist/*
-```
 
 ## 🤝 Contributing
 

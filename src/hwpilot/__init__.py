@@ -8,7 +8,7 @@ LinkedIn: https://www.linkedin.com/in/rudraksh-zodage-/
 HuggingFace: https://huggingface.co/rudrakshrakeshzodage
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "Rudraksh Rakesh Zodage"
 __email__ = "rudrakshrakeshzodage@gmail.com"
 
