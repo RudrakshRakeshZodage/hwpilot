@@ -25,9 +25,11 @@ def test_create_environment_uv_fallback(mock_run, tmp_path):
     assert isinstance(success, bool)
 
 
+@patch("hwpilot.installer.pip_runner.run_cmd_stream")
 @patch("hwpilot.installer.pip_runner.run_cmd")
-def test_install_plan_success(mock_run, tmp_path):
-    mock_run.return_value = (0, "Successfully installed torch-2.4.1", "")
+def test_install_plan_success(mock_run_cmd, mock_run_stream, tmp_path):
+    mock_run_cmd.return_value = (0, "pip upgraded", "")
+    mock_run_stream.return_value = (0, ["Successfully installed torch-2.4.1"])
     fake_py = tmp_path / "python.exe"
     fake_py.touch()
 
@@ -42,6 +44,6 @@ def test_install_plan_success(mock_run, tmp_path):
         packages=[PackageSpec(name="torch", version="2.4.1")]
     )
 
-    success, msg, logs = install_plan(plan, fake_py)
+    success, msg, logs = install_plan(plan, fake_py, stream_output=True)
     assert success is True
     assert "installed successfully" in msg.lower()

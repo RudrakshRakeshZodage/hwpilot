@@ -32,7 +32,13 @@ def cmd_detect(args):
 
 def cmd_check(args):
     report = detect_system()
-    plan = resolve_environment(report, env_path=args.path, is_global=args.global_env)
+    plan = resolve_environment(
+        report,
+        env_path=args.path,
+        is_global=args.global_env,
+        req_pytorch_version=args.pytorch_ver,
+        req_cuda_version=args.cuda_ver,
+    )
 
     suitable = plan.compatible and (report.cpu.logical_cores >= 2)
     reasons = []
@@ -75,7 +81,13 @@ def cmd_check(args):
 
 def cmd_plan(args):
     report = detect_system()
-    plan = resolve_environment(report, env_path=args.path, is_global=args.global_env)
+    plan = resolve_environment(
+        report,
+        env_path=args.path,
+        is_global=args.global_env,
+        req_pytorch_version=args.pytorch_ver,
+        req_cuda_version=args.cuda_ver,
+    )
 
     if args.json:
         out = {
@@ -95,7 +107,13 @@ def cmd_setup(args):
     report = detect_system()
 
     # 2. Plan
-    plan = resolve_environment(report, env_path=args.path, is_global=args.global_env)
+    plan = resolve_environment(
+        report,
+        env_path=args.path,
+        is_global=args.global_env,
+        req_pytorch_version=args.pytorch_ver,
+        req_cuda_version=args.cuda_ver,
+    )
 
     if args.json:
         # JSON plan setup preview
@@ -176,7 +194,13 @@ def cmd_verify(args):
 def cmd_doctor(args):
     setup_logger(verbose=True)
     report = detect_system()
-    plan = resolve_environment(report, env_path=args.path, is_global=args.global_env)
+    plan = resolve_environment(
+        report,
+        env_path=args.path,
+        is_global=args.global_env,
+        req_pytorch_version=args.pytorch_ver,
+        req_cuda_version=args.cuda_ver,
+    )
 
     doc_data = {
         "hwpilot_version": __version__,
@@ -264,6 +288,8 @@ def main():
         "--path", "-p", default="./hwpilot-env", help="Target virtual environment directory (default: ./hwpilot-env)."
     )
     common_parser.add_argument("--global", dest="global_env", action="store_true", help="Use current global Python environment.")
+    common_parser.add_argument("--pytorch", "--torch", dest="pytorch_ver", help="Suggest specific PyTorch version (e.g. 2.4.1, 2.3.1).")
+    common_parser.add_argument("--cuda", dest="cuda_ver", help="Suggest specific CUDA version (e.g. 12.4, 12.1, 11.8, cpu).")
 
     parser = argparse.ArgumentParser(
         prog="hwpilot",

@@ -12,6 +12,7 @@ class CompatibilityResolver:
     Hardware-aware ML compatibility resolver.
     Dynamically determines appropriate framework versions, CUDA runtimes,
     and package specs without hardcoded hardware strings.
+    Supports user-requested version suggestions (--pytorch, --cuda).
     """
 
     def __init__(self, metadata: Optional[Dict[str, Any]] = None):
@@ -22,7 +23,9 @@ class CompatibilityResolver:
         report: SystemReport,
         target_framework: str = "PyTorch",
         env_path: str = "./hwpilot-env",
-        is_global: bool = False
+        is_global: bool = False,
+        req_pytorch_version: Optional[str] = None,
+        req_cuda_version: Optional[str] = None,
     ) -> InstallationPlan:
         warnings: List[str] = []
         errors: List[str] = []
@@ -63,7 +66,7 @@ class CompatibilityResolver:
         selected_backend = "CPU"
         selected_cuda_version: Optional[str] = None
         selected_index_url: Optional[str] = None
-        selected_fw_version = fw_meta.get("default_version", "2.4.1")
+        selected_fw_version = req_pytorch_version or fw_meta.get("default_version", "2.4.1")
         selected_packages_raw: List[str] = ["torch", "torchvision", "torchaudio"]
 
         driver_reqs = self.metadata.get("nvidia_driver_requirements", {})
@@ -75,16 +78,27 @@ class CompatibilityResolver:
             driver_ver = report.driver.version
             os_key = "Windows" if os_sys == "Windows" else "Linux"
 
-            # Search candidate CUDA runtimes in order of preference
+            # Filter candidates if specific CUDA version requested
+            if req_cuda_version:
+                req_cuda_clean = req_cuda_version.lower().replace("cuda", "").strip()
+                if req_cuda_clean == "cpu":
+                    candidates_to_eval = [c for c in cuda_candidates if c.get("cuda_version") is None]
+                else:
+                    candidates_to_eval = [c for c in cuda_candidates if c.get("cuda_version") == req_cuda_clean]
+                if not candidates_to_eval:
+                    warnings.append(f"Requested CUDA version '{req_cuda_version}' not found in index. Evaluating defaults.")
+                    candidates_to_eval = cuda_candidates
+            else:
+                candidates_to_eval = cuda_candidates
+
             matched_cuda = None
             highest_req_driver = None
 
-            for candidate in cuda_candidates:
+            for candidate in candidates_to_eval:
                 cuda_ver = candidate.get("cuda_version")
                 if not cuda_ver:
-                    continue  # skip CPU fallback candidate in GPU search
+                    continue
 
-                # Driver check for this CUDA version
                 req_driver_dict = driver_reqs.get(cuda_ver, {})
                 req_min_driver = req_driver_dict.get(os_key)
 
@@ -98,11 +112,11 @@ class CompatibilityResolver:
             if matched_cuda:
                 selected_backend = "CUDA"
                 selected_cuda_version = matched_cuda["cuda_version"]
-                selected_fw_version = matched_cuda.get("pytorch_version", selected_fw_version)
+                if not req_pytorch_version:
+                    selected_fw_version = matched_cuda.get("pytorch_version", selected_fw_version)
                 selected_index_url = matched_cuda.get("index_url")
                 selected_packages_raw = matched_cuda.get("packages", selected_packages_raw)
             else:
-                # Incompatible or missing driver
                 selected_backend = "CPU"
                 if not report.driver.available:
                     driver_status_msg = (
@@ -111,20 +125,18 @@ class CompatibilityResolver:
                     )
                     warnings.append(driver_status_msg)
                 else:
+                    req_msg = f"Requested CUDA ({req_cuda_version})" if req_cuda_version else "Requested CUDA runtimes"
                     driver_status_msg = (
-                        f"⚠ Installed NVIDIA driver ({driver_ver}) appears incompatible with requested CUDA runtimes "
-                        f"(Minimum required driver for latest CUDA: {highest_req_driver}). "
-                        "HwPilot will not modify system drivers. Falling back to CPU backend. "
-                        "Please update your NVIDIA driver and run `hwpilot doctor`."
+                        f"⚠ Installed NVIDIA driver ({driver_ver}) is incompatible with {req_msg}. "
+                        f"(Minimum required driver for CUDA: {highest_req_driver}). "
+                        "Falling back to CPU backend. Please update your NVIDIA driver."
                     )
                     warnings.append(driver_status_msg)
         elif report.gpu.vendor.lower() == "apple":
             selected_backend = "MPS"
-            # PyTorch standard wheels support MPS out of the box
             selected_index_url = None
         else:
             selected_backend = "CPU"
-            # Find CPU candidate
             for candidate in cuda_candidates:
                 if candidate.get("cuda_version") is None:
                     selected_index_url = candidate.get("index_url")
@@ -164,7 +176,16 @@ def resolve_environment(
     report: SystemReport,
     target_framework: str = "PyTorch",
     env_path: str = "./hwpilot-env",
-    is_global: bool = False
+    is_global: bool = False,
+    req_pytorch_version: Optional[str] = None,
+    req_cuda_version: Optional[str] = None,
 ) -> InstallationPlan:
     resolver = CompatibilityResolver()
-    return resolver.resolve(report, target_framework=target_framework, env_path=env_path, is_global=is_global)
+    return resolver.resolve(
+        report,
+        target_framework=target_framework,
+        env_path=env_path,
+        is_global=is_global,
+        req_pytorch_version=req_pytorch_version,
+        req_cuda_version=req_cuda_version,
+    )

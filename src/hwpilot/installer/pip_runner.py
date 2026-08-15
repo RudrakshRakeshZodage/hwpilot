@@ -1,17 +1,18 @@
-"""Package installer routines using pip/uv."""
+"""Package installer routines using pip with real-time download streaming."""
 
 from pathlib import Path
 from typing import List, Tuple
 from hwpilot.models.plan import InstallationPlan
-from hwpilot.utils.subprocess_utils import run_cmd
+from hwpilot.utils.subprocess_utils import run_cmd, run_cmd_stream
 from hwpilot.utils.logger import get_logger
 
 logger = get_logger()
 
 
-def install_plan(plan: InstallationPlan, python_exe: Path) -> Tuple[bool, str, List[str]]:
+def install_plan(plan: InstallationPlan, python_exe: Path, stream_output: bool = True) -> Tuple[bool, str, List[str]]:
     """
     Installs packages defined in InstallationPlan inside the specified virtual environment.
+    Streams download and installation progress (e.g. 2.4 GB PyTorch wheels) in real-time.
     Returns (success, status_summary, log_entries).
     """
     if not python_exe.exists() and not plan.is_global:
@@ -26,7 +27,7 @@ def install_plan(plan: InstallationPlan, python_exe: Path) -> Tuple[bool, str, L
     logs.append(f"Pip upgrade output:\n{stdout}\n{stderr}")
 
     # 2. Build install command for resolved packages
-    cmd = py_cmd + ["-m", "pip", "install"]
+    cmd = py_cmd + ["-m", "pip", "install", "--progress-bar", "on"]
 
     if plan.index_url:
         cmd.extend(["--index-url", plan.index_url, "--extra-index-url", "https://pypi.org/simple"])
@@ -40,11 +41,15 @@ def install_plan(plan: InstallationPlan, python_exe: Path) -> Tuple[bool, str, L
     logger.info(f"Executing installation command: {' '.join(cmd)}")
     logs.append(f"Command: {' '.join(cmd)}")
 
-    code, stdout, stderr = run_cmd(cmd, timeout=600)  # ML package downloads can take a few minutes
-    logs.append(f"Install stdout:\n{stdout}")
-    logs.append(f"Install stderr:\n{stderr}")
+    if stream_output:
+        print("\n📥 Downloading & installing ML packages (PyTorch / CUDA wheels ~2.4GB)...")
+        code, lines = run_cmd_stream(cmd)
+        logs.extend(lines)
+    else:
+        code, stdout, stderr = run_cmd(cmd, timeout=900)
+        logs.append(f"Install stdout:\n{stdout}\nstderr:\n{stderr}")
 
     if code == 0:
         return True, "All resolved packages installed successfully.", logs
     else:
-        return False, f"Package installation failed with exit code {code}.\nStderr: {stderr}", logs
+        return False, f"Package installation failed with exit code {code}.", logs

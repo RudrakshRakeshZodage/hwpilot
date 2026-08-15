@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "updated_at": "2026-08-15T00:00:00Z",
   "nvidia_driver_requirements": {
     "12.4": {
@@ -17,8 +17,9 @@
   },
   "frameworks": {
     "PyTorch": {
-      "python_supported": ["3.8", "3.9", "3.10", "3.11", "3.12"],
+      "python_supported": ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
       "default_version": "2.4.1",
+      "available_versions": ["2.4.1", "2.3.1", "2.2.2", "2.1.2", "2.0.1"],
       "cuda_runtimes": [
         {
           "cuda_version": "12.4",

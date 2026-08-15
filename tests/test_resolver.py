@@ -71,3 +71,20 @@ def test_resolver_unsupported_os():
 
     assert plan.compatible is False
     assert any("Unsupported operating system" in err for err in plan.errors)
+
+
+def test_resolver_custom_version_suggestion():
+    report = build_mock_report(driver_version="535.104.05")
+    resolver = CompatibilityResolver()
+    plan = resolver.resolve(
+        report,
+        req_pytorch_version="2.3.1",
+        req_cuda_version="12.1"
+    )
+
+    assert plan.compatible is True
+    assert plan.backend == "CUDA"
+    assert plan.framework_version == "2.3.1"
+    assert plan.cuda_runtime_version == "12.1"
+    assert any(pkg.version == "2.3.1" for pkg in plan.packages if pkg.name == "torch")
+

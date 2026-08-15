@@ -1,6 +1,7 @@
 """Rich console output formatting for HwPilot CLI."""
 
 import sys
+import os
 from rich.console import Console
 from rich.table import Table
 from typing import Dict, Any
@@ -155,6 +156,16 @@ def print_verification(results: Dict[str, Any], env_path: str):
 
     console.print("Environment:")
     console.print(f"  {env_path}\n")
+
+    # Activation instructions
+    console.print("[bold cyan]To activate and use this environment in CLI:[/bold cyan]")
+    if sys.platform == "win32":
+        console.print(f"  [green]{env_path}\\Scripts\\activate[/green]")
+    else:
+        console.print(f"  [green]source {env_path}/bin/activate[/green]")
+
+    console.print("\n[bold cyan]Run verification check anytime:[/bold cyan]")
+    console.print(f"  [green]hwpilot verify --path {env_path}[/green]\n")
 
 
 def print_table_dict(title: str, data: Dict[str, Any]):

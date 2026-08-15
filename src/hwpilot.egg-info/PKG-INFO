@@ -136,6 +136,8 @@ hwpilot setup --yes --path ./my-ml-env
 
 ### Command Flags
 
+- `--pytorch <VER>` / `--torch <VER>`: Suggest specific PyTorch framework version (e.g. `2.4.1`, `2.3.1`).
+- `--cuda <VER>`: Suggest specific CUDA runtime build version (e.g. `12.4`, `12.1`, `11.8`, `cpu`).
 - `--json`: Output machine-readable JSON format for programmatic use.
 - `-y`, `--yes`: Bypass interactive confirmation prompt.
 - `-p`, `--path <DIR>`: Custom target environment path (default: `./hwpilot-env`).

@@ -91,6 +91,8 @@ hwpilot setup --yes --path ./my-ml-env
 
 ### Command Flags
 
+- `--pytorch <VER>` / `--torch <VER>`: Suggest specific PyTorch framework version (e.g. `2.4.1`, `2.3.1`).
+- `--cuda <VER>`: Suggest specific CUDA runtime build version (e.g. `12.4`, `12.1`, `11.8`, `cpu`).
 - `--json`: Output machine-readable JSON format for programmatic use.
 - `-y`, `--yes`: Bypass interactive confirmation prompt.
 - `-p`, `--path <DIR>`: Custom target environment path (default: `./hwpilot-env`).
@@ -137,12 +139,17 @@ pytest
 
 ## 📦 PyPI Publishing
 
+### Manual Publishing (Twine)
 ```bash
 pip install build twine
 python -m build
 twine check dist/*
 twine upload dist/*
 ```
+
+### Automated Publishing (GitHub Actions Trusted Publisher)
+1. Configure PyPI Trusted Publisher with workflow `.github/workflows/pypi-publish.yml`.
+2. Create a GitHub Release — publishing triggers automatically on release creation.
 
 ## 🤝 Contributing
 
