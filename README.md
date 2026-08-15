@@ -1,4 +1,4 @@
-# HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
+# HwPilot - Hardware-aware ML Environment Setup & Compatibility Manager
 
 [![PyPI](https://img.shields.io/badge/PyPI-v0.1.3-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
 [![Python](https://img.shields.io/badge/Python-3.8_|_3.9_|_3.10_|_3.11_|_3.12_|_3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/hwpilot/)
@@ -10,7 +10,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Rudraksh%20Zodage-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rudraksh-zodage-/)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Rudraksh%20Zodage-FFD21E?style=flat-square)](https://huggingface.co/rudrakshrakeshzodage)
 
-> **HwPilot — Hardware-aware ML environment setup and compatibility manager.**
+> **HwPilot - Hardware-aware ML environment setup and compatibility manager.**
 > 
 > *Detect my hardware. Resolve the correct ML environment. Ask me once. Install it safely. Verify that it actually works.*
 
