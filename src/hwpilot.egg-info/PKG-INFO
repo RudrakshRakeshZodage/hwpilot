@@ -43,14 +43,21 @@ Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
 Requires-Dist: build>=0.10.0; extra == "dev"
 Requires-Dist: twine>=4.0.0; extra == "dev"
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/RudrakshRakeshZodage/hwpilot/main/main.png" alt="HwPilot Banner" width="100%" />
+</div>
+
 # HwPilot — Hardware-aware ML Environment Setup & Compatibility Manager
 
-[![PyPI version](https://img.shields.io/pypi/v/hwpilot.svg?style=flat-square&color=blue)](https://pypi.org/project/hwpilot/)
-[![Python Version](https://img.shields.io/pypi/pyversions/hwpilot.svg?style=flat-square&color=brightgreen)](https://pypi.org/project/hwpilot/)
+[![PyPI](https://img.shields.io/badge/PyPI-v0.1.1-3775A9?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![Python](https://img.shields.io/badge/Python-3.8_|_3.9_|_3.10_|_3.11_|_3.12_|_3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/hwpilot/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.6_|_2.5_|_2.4-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![CUDA](https://img.shields.io/badge/CUDA-12.4_|_12.1_|_11.8-76B900?style=flat-square&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
+[![Hardware](https://img.shields.io/badge/Hardware-NVIDIA_RTX_|_Apple_MPS_|_CPU-0078D4?style=flat-square&logo=nvidia&logoColor=white)](https://github.com/RudrakshRakeshZodage/hwpilot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Author: Rudraksh Rakesh Zodage](https://img.shields.io/badge/Author-Rudraksh%20Rakesh%20Zodage-orange.svg?style=flat-square)](https://github.com/RudrakshRakeshZodage)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rudraksh%20Zodage-blue?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/rudraksh-zodage-/)
-[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Rudraksh%20Zodage-yellow?style=flat-square)](https://huggingface.co/rudrakshrakeshzodage)
+[![Author](https://img.shields.io/badge/Author-Rudraksh%20Rakesh%20Zodage-orange.svg?style=flat-square)](https://github.com/RudrakshRakeshZodage)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rudraksh%20Zodage-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rudraksh-zodage-/)
+[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Rudraksh%20Zodage-FFD21E?style=flat-square)](https://huggingface.co/rudrakshrakeshzodage)
 
 > **HwPilot — Hardware-aware ML environment setup and compatibility manager.**
 > 
@@ -61,7 +68,7 @@ Requires-Dist: twine>=4.0.0; extra == "dev"
 ## 👨‍💻 Created & Maintained By
 
 **Rudraksh Rakesh Zodage**  
-AI / Machine Learning Engineer & Developer
+Open Source AI Engineer
 
 - **Email**: [rudrakshrakeshzodage@gmail.com](mailto:rudrakshrakeshzodage@gmail.com)
 - **GitHub**: [github.com/RudrakshRakeshZodage](https://github.com/RudrakshRakeshZodage/)
@@ -70,19 +77,57 @@ AI / Machine Learning Engineer & Developer
 
 ---
 
-## 🔄 User Workflow & Architecture
+## 🔄 End-to-End Architecture & Workflow
+
+| Step | Layer / Component | Action | Result / Output |
+| :--- | :--- | :--- | :--- |
+| **1** | 💻 **User Terminal** | Run `hwpilot setup -y` | Triggers automated pipeline |
+| **2** | 🔍 **Hardware Detector** | Probes CPU, GPU, Driver via `nvidia-smi`, OS & Python | System specs: RTX 4060, Driver 610.74, Python 3.13 |
+| **3** | ⚖️ **Compatibility Engine** | Matches NVIDIA Driver vs CUDA Matrix (`defaults.json`) | Resolves **PyTorch 2.6.0 + CUDA 12.4** (`cu124`) |
+| **4** | 📦 **Environment Manager** | Creates isolated virtual environment (`./hwpilot-env`) | Clean virtual environment seeded with pip & wheel |
+| **5** | 🌐 **PyTorch CDN Index** | Streams package download & uncompress | ~2.53 GB PyTorch CUDA wheels extracted to disk |
+| **6** | 🧪 **GPU Tensor Verifier** | Executes real matrix multiplication on GPU | **Verified GPU runtime acceleration** |
+| **7** | 📄 **Manifest Writer** | Generates audit records | `manifest.json`, `hardware.json`, `environment.json` |
 
 ```mermaid
-flowchart TD
-    A["User Terminal / CLI"] --> B["Hardware Detection Layer"]
-    B --> C["Compatibility Resolver Engine"]
-    C --> D["Installation Plan Preview"]
-    D --> E["User Confirmation Prompt"]
-    E -->|Yes| F["Virtual Environment Creation"]
-    F --> G["Package Installation"]
-    G --> H["Real GPU Runtime Verification"]
-    H --> I["Persistent Manifest Saved"]
-    E -->|No| J["Setup Cancelled"]
+sequenceDiagram
+    autonumber
+    actor User as 💻 User (CLI)
+    participant Detector as 🔍 Hardware Detector
+    participant Resolver as ⚖️ Compatibility Engine
+    participant Venv as 📦 Environment Manager
+    participant PyTorch as 🌐 PyTorch Wheel Index
+    participant Verifier as 🧪 GPU Tensor Verifier
+
+    User->>Detector: Execute `hwpilot setup -y`
+    activate Detector
+    Detector->>Detector: Probe CPU, GPU (nvidia-smi), OS & Python
+    Detector-->>Resolver: Return Hardware Specs (RTX 4060, Driver 610.74, Python 3.13)
+    deactivate Detector
+
+    activate Resolver
+    Resolver->>Resolver: Evaluate Driver vs CUDA Matrix (defaults.json)
+    Resolver-->>User: Display Compatibility Plan (PyTorch 2.6.0 + CUDA 12.4)
+    deactivate Resolver
+
+    User->>Venv: Initialize Isolated Virtual Environment
+    activate Venv
+    Venv->>Venv: Create `./hwpilot-env` (Seeded with pip/wheel)
+    
+    Venv->>PyTorch: Request PyTorch CUDA 12.4 Wheel Packages
+    activate PyTorch
+    PyTorch-->>Venv: Stream Download (~2.53 GB) & Unpack CUDA DLLs
+    deactivate PyTorch
+    deactivate Venv
+
+    Venv->>Verifier: Trigger Runtime Verification Suite
+    activate Verifier
+    Verifier->>Verifier: Import torch & Validate CUDA Device Available
+    Verifier->>Verifier: Execute Matrix Multiplication Tensor Math on GPU
+    Verifier-->>User: Runtime Verification PASSED (GPU Accelerated)
+    deactivate Verifier
+
+    Venv->>User: Save `manifest.json` & Output Environment Activation Path
 ```
 
 ---
@@ -112,38 +157,22 @@ pip install hwpilot
 > $env:Path += ";$env:APPDATA\Python\Python313\Scripts"
 > ```
 
-### Basic Workflow
+### Quick Setup
 
-You can invoke HwPilot via `hwpilot` or `python -m hwpilot`:
-
-```bash
-# 1. Inspect hardware and system specs
-hwpilot detect
-# or: python -m hwpilot detect
-
-# 2. Check if current machine is suitable for ML workloads
-hwpilot check
-# or: python -m hwpilot check
-
-# 3. Preview resolved compatibility & installation plan
-hwpilot plan
-# or: python -m hwpilot plan
-
-# 4. Execute setup (detect, resolve, confirm, install & verify)
-hwpilot setup
-# or: python -m hwpilot setup
-
-# 5. Verify runtime environment capability
-hwpilot verify
-# or: python -m hwpilot verify
-```
-
-### Automation / CI Mode
+Auto-detect your hardware, resolve compatible PyTorch/CUDA wheels, create an isolated virtual environment, and verify GPU compute in one command:
 
 ```bash
-hwpilot setup --yes --path ./my-ml-env
-# or: python -m hwpilot setup --yes --path ./my-ml-env
+hwpilot setup -y
 ```
+
+*(or via python module)*:
+```bash
+python -m hwpilot setup -y
+```
+
+> **Flags**:
+> - `-y`, `--yes`: Automatically accept and proceed without prompt.
+> - `-p`, `--path <DIR>`: Custom environment path (default: `./hwpilot-env`).
 
 ---
 
@@ -219,16 +248,7 @@ Contributions to **HwPilot** are welcome! Whether you are reporting a bug, addin
 4. Ensure test suite passes: `pytest`
 5. Open a Pull Request on [GitHub](https://github.com/RudrakshRakeshZodage/hwpilot/pulls).
 
----
 
-## 👤 Author & Maintainer Profile
-
-Created, architected, and maintained by **Rudraksh Rakesh Zodage**.
-
-- **Email**: [rudrakshrakeshzodage@gmail.com](mailto:rudrakshrakeshzodage@gmail.com)
-- **GitHub**: [github.com/RudrakshRakeshZodage](https://github.com/RudrakshRakeshZodage/)
-- **LinkedIn**: [linkedin.com/in/rudraksh-zodage-](https://www.linkedin.com/in/rudraksh-zodage-/)
-- **HuggingFace**: [huggingface.co/rudrakshrakeshzodage](https://huggingface.co/rudrakshrakeshzodage)
 
 ---
 

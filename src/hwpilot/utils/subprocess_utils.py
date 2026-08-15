@@ -1,4 +1,4 @@
-"""Safe subprocess execution helper with real-time streaming support."""
+"""Safe subprocess execution helper with real-time streaming and UTF-8 encoding support."""
 
 import sys
 import subprocess
@@ -13,7 +13,7 @@ def run_cmd(
     check_executable: bool = True
 ) -> Tuple[int, str, str]:
     """
-    Executes a subprocess command safely.
+    Executes a subprocess command safely with explicit UTF-8 decoding.
     Returns (returncode, stdout, stderr).
     """
     if check_executable and cmd:
@@ -27,6 +27,8 @@ def run_cmd(
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=timeout,
             cwd=cwd
         )
@@ -44,7 +46,7 @@ def run_cmd_stream(
 ) -> Tuple[int, List[str]]:
     """
     Executes a subprocess command and streams stdout lines in real-time,
-    handling both newline (\\n) and carriage return (\\r) progress updates.
+    handling UTF-8 encoding, newlines (\\n), and carriage returns (\\r).
     Returns (returncode, lines_captured).
     """
     if cmd:
@@ -59,6 +61,8 @@ def run_cmd_stream(
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             cwd=cwd,
             bufsize=1,
             universal_newlines=True
@@ -67,7 +71,11 @@ def run_cmd_stream(
         buffer = ""
         if proc.stdout:
             while True:
-                chunk = proc.stdout.read(64)
+                try:
+                    chunk = proc.stdout.read(64)
+                except Exception:
+                    break
+
                 if not chunk and proc.poll() is not None:
                     break
                 if not chunk:

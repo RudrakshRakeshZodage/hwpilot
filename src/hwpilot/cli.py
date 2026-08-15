@@ -96,7 +96,7 @@ def cmd_plan(args):
         }
         print(json.dumps(out, indent=2))
     else:
-        print_detection_report(report)
+        print_banner()
         print_plan(plan)
 
 
@@ -122,7 +122,7 @@ def cmd_setup(args):
             sys.exit(0)
 
     else:
-        print_detection_report(report)
+        print_banner()
         print_plan(plan)
 
         if not plan.compatible:

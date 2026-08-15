@@ -11,7 +11,7 @@ class CompatibilityResolver:
     """
     Hardware-aware ML compatibility resolver.
     Dynamically determines appropriate framework versions, CUDA runtimes,
-    and package specs without hardcoded hardware strings.
+    and package specs matching system Python and GPU hardware.
     Supports user-requested version suggestions (--pytorch, --cuda).
     """
 
@@ -55,18 +55,22 @@ class CompatibilityResolver:
                 errors=errors,
             )
 
-        # 3. Python Version Compatibility
+        # 3. Python Version Compatibility & Dynamic Version Mapping
         supported_pythons = fw_meta.get("python_supported", [])
         if not is_python_compatible(report.python.version, supported_pythons):
             warnings.append(
                 f"Python version {report.python.version} is outside tested framework range {supported_pythons}."
             )
 
-        # 4. Backend & CUDA Resolution
+        py_tuple = getattr(report.python, "version_tuple", (3, 10, 0))
+        py_short = f"{py_tuple[0]}.{py_tuple[1]}"
+        py_map = fw_meta.get("python_version_map", {})
+        default_fw_for_python = py_map.get(py_short, fw_meta.get("default_version", "2.6.0"))
+
         selected_backend = "CPU"
         selected_cuda_version: Optional[str] = None
         selected_index_url: Optional[str] = None
-        selected_fw_version = req_pytorch_version or fw_meta.get("default_version", "2.4.1")
+        selected_fw_version = req_pytorch_version or default_fw_for_python
         selected_packages_raw: List[str] = ["torch", "torchvision", "torchaudio"]
 
         driver_reqs = self.metadata.get("nvidia_driver_requirements", {})
@@ -112,8 +116,6 @@ class CompatibilityResolver:
             if matched_cuda:
                 selected_backend = "CUDA"
                 selected_cuda_version = matched_cuda["cuda_version"]
-                if not req_pytorch_version:
-                    selected_fw_version = matched_cuda.get("pytorch_version", selected_fw_version)
                 selected_index_url = matched_cuda.get("index_url")
                 selected_packages_raw = matched_cuda.get("packages", selected_packages_raw)
             else:
